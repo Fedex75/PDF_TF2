@@ -172,7 +172,7 @@ def draw_processing_files():
                 remaining_string += 'Calculando tiempo restante...'
             else:
                 remaining_seconds = int(math.ceil((manager.number_of_files_dropped - manager.number_of_files_processed) * (datetime.datetime.now() - manager.timestamp_processing_start).total_seconds() / manager.number_of_files_processed))
-                remaining_string += f'{remaining_seconds} segundo{'' if remaining_seconds == 1 else 's'} restantes...'
+                remaining_string += f"{remaining_seconds} segundo{'' if remaining_seconds == 1 else 's'} restantes..."
             canvas.create_text(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 60, text=remaining_string, fill='gray')
             error_text_offset = 80
         if manager.number_of_files_with_error > 0:
