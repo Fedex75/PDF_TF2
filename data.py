@@ -95,14 +95,15 @@ def get_data_D(lines, id_pdf):
 
     for line in lines:
         if "Destino" in line:
+            print(line)
             index_destino = line.index("Destino")
             index_conse = line.index("Conse")
             index_marca = line.index("Marca")
-            index_tropa = line.index("Tropa-Lt")
-            index_piezas = line.index("Piezas")
-            index_uni = line.index("Uni.")
+            index_tropa = line.index("Tropa-Lt") - 1
+            index_piezas = line.index("Piezas") - 1
+            index_uni = line.index("Uni.") - 1
             index_cl = line.index("Cl") - 1
-            index_kilos = line.index("Kilos")
+            index_kilos = line.index("Kilos") - 1
 
     inicio_tabla_entrada = 0
     i = 0
@@ -127,12 +128,12 @@ def get_data_D(lines, id_pdf):
             cod_prod = lines[i].split()[0].strip()
             producto = " ".join(lines[i][:index_destino].strip().split()[1:])
             destino = lines[i][index_destino:index_conse].strip()
-            right = lines[i][index_cl:].strip().split()
-            cl = right[0]
-            uni = right[1].replace(",","")
-            kilos = right[2].replace(",","")
+            cl = lines[i][index_cl:index_tropa].strip()
+            tropa = lines[i][index_tropa:index_piezas].strip()
+            uni = lines[i][index_piezas:index_uni+4].strip()
+            kilos = lines[i][index_uni+4:index_kilos+5].strip().replace(",","")
 
-            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{uni},{kilos},{id_pdf}")
+            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{tropa},{uni},{kilos},{id_pdf}")
 
     i = fin_tabla_entrada + 1
     fin_tabla_salida = 0
@@ -145,6 +146,7 @@ def get_data_D(lines, id_pdf):
 
     for i in range(fin_tabla_entrada + 2, fin_tabla_salida):
         if lines[i].split()[0].strip().isnumeric():
+            print(lines[i])
             cod_prod = lines[i].split()[0].strip()
             producto = " ".join(lines[i][:index_destino].strip().split()[1:])
             destino = lines[i][index_destino:index_conse].strip()
@@ -152,10 +154,10 @@ def get_data_D(lines, id_pdf):
             marca = lines[i][index_marca:index_cl].strip()
 
             piezas = lines[i][index_tropa+8:index_piezas+6].strip().replace(",","")
-            uni = lines[i][index_piezas+6:index_uni+4].strip().replace(",","")
-            kilos = lines[i][index_uni+4:index_kilos+5].strip().replace(",","")
+            uni = lines[i][index_piezas+7:index_uni+5].strip().replace(",","")
+            kilos = lines[i][index_uni+5:index_kilos+6].strip().replace(",","")
 
-            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},SALIDA,{cod_prod},{producto},{destino},{conse},{marca},,{piezas},{uni},{kilos},{id_pdf}")
+            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},SALIDA,{cod_prod},{producto},{destino},{conse},{marca},,{piezas},,{uni},{kilos},{id_pdf}")
 
     return result
 
