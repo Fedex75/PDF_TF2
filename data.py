@@ -95,7 +95,6 @@ def get_data_D(lines, id_pdf):
 
     for line in lines:
         if "Destino" in line:
-            print(line)
             index_destino = line.index("Destino")
             index_conse = line.index("Conse")
             index_marca = line.index("Marca")
@@ -146,7 +145,6 @@ def get_data_D(lines, id_pdf):
 
     for i in range(fin_tabla_entrada + 2, fin_tabla_salida):
         if lines[i].split()[0].strip().isnumeric():
-            print(lines[i])
             cod_prod = lines[i].split()[0].strip()
             producto = " ".join(lines[i][:index_destino].strip().split()[1:])
             destino = lines[i][index_destino:index_conse].strip()
