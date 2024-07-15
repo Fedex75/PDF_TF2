@@ -1,5 +1,6 @@
 '''GUI'''
 import os
+import re
 import threading
 import datetime
 import math
@@ -75,12 +76,19 @@ class Manager:
             self.number_of_files_processed += 1
         self.update_canvas()
 
+def split_pathnames(input_string):
+    # 🛑 Alto en ChatGPT
+    # This regex pattern matches sequences of characters inside curly braces or sequences of non-whitespace characters
+    pattern = r'\{.*?\}|\S+'
+    words = re.findall(pattern, input_string)
+    return words
+
 def drop(event):
     '''Handle drop event'''
     if manager.files_have_dropped:
         return
     manager.files_are_hovering = False
-    path_names = event.data.split()
+    path_names = [path_name.replace('{', '').replace('}', '') for path_name in split_pathnames(event.data)]
     if len(path_names) == 1:
         if os.path.isdir(path_names[0]):
             file_names = utils.get_unique_pdf_files(path_names[0])
