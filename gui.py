@@ -108,7 +108,7 @@ def drop(event):
                     process_function = data.process_pdf_C
                 elif basename == 'despostada':
                     out_file = 'datos_d.csv'
-                    header = 'CONSIGNATARIO,FECHA_INICIO,FECHA_FIN,PROCESO,ID,PRODUCTO,DESTINO,CONSERVACION,MARCA,CL,PIEZAS,TROPA,UNIDADES,KILOS,ID PDF'
+                    header = 'CONSIGNATARIO,FECHA_INICIO,FECHA_FIN,PROCESO,ID,PRODUCTO,DESTINO,CONSERVACION,MARCA,CL,PIEZAS,TROPA,UNIDADES,KILOS,RENDI,ID PDF'
                     process_function = data.process_pdf_D
                 else:
                     manager.set_error('Carpeta desconocida')

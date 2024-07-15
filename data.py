@@ -103,6 +103,7 @@ def get_data_D(lines, id_pdf):
             index_uni = line.index("Uni.") - 1
             index_cl = line.index("Cl") - 1
             index_kilos = line.index("Kilos") - 1
+            index_rendi = line.index("Rendi%") - 1
 
     inicio_tabla_entrada = 0
     i = 0
@@ -130,9 +131,9 @@ def get_data_D(lines, id_pdf):
             cl = lines[i][index_cl:index_tropa].strip()
             tropa = lines[i][index_tropa:index_piezas].strip()
             uni = lines[i][index_piezas:index_uni+4].strip()
-            kilos = lines[i][index_uni+4:index_kilos+5].strip().replace(",","")
+            kilos = lines[i][index_uni+5:index_kilos+6].strip().replace(",","")
 
-            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{tropa},{uni},{kilos},{id_pdf}")
+            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{tropa},{uni},{kilos},,{id_pdf}")
 
     i = fin_tabla_entrada + 1
     fin_tabla_salida = 0
@@ -154,8 +155,9 @@ def get_data_D(lines, id_pdf):
             piezas = lines[i][index_tropa+8:index_piezas+6].strip().replace(",","")
             uni = lines[i][index_piezas+7:index_uni+5].strip().replace(",","")
             kilos = lines[i][index_uni+5:index_kilos+6].strip().replace(",","")
+            rendi = lines[i][index_rendi:index_rendi+8].strip().replace(",","")
 
-            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},SALIDA,{cod_prod},{producto},{destino},{conse},{marca},,{piezas},,{uni},{kilos},{id_pdf}")
+            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},SALIDA,{cod_prod},{producto},{destino},{conse},{marca},,{piezas},,{uni},{kilos},{rendi},{id_pdf}")
 
     return result
 
@@ -193,9 +195,14 @@ def get_data_F(lines, id_pdf):
         razon_social = consignatario
 
     #localidad = lines[1][18:index_cuit].strip()
-    localidad = text_between(lines[1], "Procedencia:", "CUIT:").split("-")[1].strip()
-    cuit = text_between(lines[1], "CUIT:", "RENSPA:")
-    renspa = text_between(lines[1], "RENSPA:", "- DTE:")
+    if 'CUIT:' in lines[1]:
+        localidad = text_between(lines[1], "Procedencia:", "CUIT:").split("-")[1].strip()
+        cuit = text_between(lines[1], "CUIT:", "RENSPA:")
+        renspa = text_between(lines[1], "RENSPA:", "- DTE:")
+    else:
+        localidad = text_between(lines[1], 'Procedencia:', '-').strip()
+        cuit = ''
+        renspa = ''
     dte = text_between(lines[1], "DTE:", "")
     tropa_nro = text_between(lines[3], "TROPA NRO..:", "-").replace(",", ".")
     nro_guia = text_between(lines[4], "NRO.DE GUIA:", "CABEZAS FAENADAS:")
