@@ -195,7 +195,7 @@ manager = Manager()
 root = TkinterDnD.Tk()
 root.title("PDF_TF")
 root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
-root.iconphoto(True, tk.PhotoImage(file='assets/AppIcon.png'))
+root.wm_iconphoto(False, tk.PhotoImage(file='assets/AppIcon.png'))
 
 canvas = tk.Canvas(root, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, highlightthickness=0)
 canvas.pack()
