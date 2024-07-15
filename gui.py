@@ -94,7 +94,7 @@ def drop(event):
                     out_file = 'datos_f.csv'
                     header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG'
                     process_function = data.process_pdf_F
-                elif basename == 'carneo':
+                elif basename == 'cuarteo':
                     out_file = 'datos_c.csv'
                     header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG'
                     process_function = data.process_pdf_C
