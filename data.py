@@ -1,6 +1,6 @@
 '''Data functions'''
 import re
-from utils import text_between, read_pdf, filter_empty_lines
+from utils import text_between, extract_text_from_pdf, filter_empty_lines
 
 def get_data_C(lines, id_pdf):
     '''Extract data from PDF type C'''
@@ -61,12 +61,8 @@ def get_data_C(lines, id_pdf):
 
 def process_pdf_C(path, id_pdf):
     '''Process PDF using C method'''
-    reader = read_pdf(path)
-    lines = []
-    for page in reader.pages:
-        lines.extend(page.extract_text().split('\n'))
 
-    lines = filter_empty_lines(lines)
+    lines = extract_text_from_pdf(path)
 
     indeces = []
     for i, line in enumerate(lines):
@@ -163,12 +159,7 @@ def get_data_D(lines, id_pdf):
 
 def process_pdf_D(path, id_pdf):
     '''Extract data from PDF type D'''
-    reader = read_pdf(path)
-    lines = []
-    for page in reader.pages:
-        lines.extend(page.extract_text().split('\n'))
-
-    lines = filter_empty_lines(lines)
+    lines = extract_text_from_pdf(path)
 
     indices = []
     for i, line in enumerate(lines):
@@ -257,19 +248,14 @@ def get_data_F(lines, id_pdf):
         kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
         info = (lines[i+1][1:kilo_table_left-1]).split()
 
-        for j in range(len(ids)):
+        for j in range(len(kilos)):
             result.append(f"{info[0]},{info[1]},{info[2]},{ids[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf}")
 
     return result
 
 def process_pdf_F(path, id_pdf):
     '''Process PDF using F method'''
-    reader = read_pdf(path)
-    lines = []
-    for page in reader.pages:
-        lines.extend(page.extract_text().split('\n'))
-
-    lines = filter_empty_lines(lines)
+    lines = extract_text_from_pdf(path)
 
     indeces = []
     for i, line in enumerate(lines):

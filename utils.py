@@ -2,7 +2,7 @@ import hashlib
 import os
 import glob
 import traceback
-from PyPDF2 import PdfReader
+import pymupdf
 
 def text_between(line, before, after):
     '''Find string between two strings'''
@@ -68,9 +68,12 @@ def csv_output(folder, file_names, out_file, header, process_function, increment
 
     finished_callback()
 
-def read_pdf(path):
-    '''Create PdfReader from path'''
-    return PdfReader(path)
+def extract_text_from_pdf(path):
+    doc = pymupdf.open(path)
+    lines = []
+    for page in doc:
+        lines += page.get_text().splitlines()
+    return filter_empty_lines(lines)
 
 def filter_empty_lines(lines):
     '''Remove empty lines from list'''
