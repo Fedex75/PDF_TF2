@@ -177,6 +177,8 @@ def get_data_F(lines, id_pdf):
     '''Extract data from PDF type F'''
     # Obtener info encabezado
 
+    usuario = text_between(lines[0], '(', ')')
+
     indices = [m.start() for m in re.finditer('/', lines[0])]
     if len(indices) > 0:
         consignatario = lines[0][indices[0] + 1 : indices[1]].strip()
@@ -249,7 +251,7 @@ def get_data_F(lines, id_pdf):
         info = (lines[i+1][1:kilo_table_left-1]).split()
 
         for j in range(len(kilos)):
-            result.append(f"{info[0]},{info[1]},{info[2]},{ids[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf}")
+            result.append(f"{info[0]},{info[1]},{info[2]},{ids[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
 
     return result
 
