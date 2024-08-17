@@ -204,7 +204,7 @@ def get_data_F(lines, id_pdf):
         cuit = ''
         renspa = ''
     dte = text_between(lines[1], "DTE:", "")
-    tropa_nro = text_between(lines[3], "TROPA NRO..:", "-").replace(",", ".")
+    tropa_nro = text_between(lines[3], "TROPA NRO..:", "TOTAL").replace(",", ".")
     nro_guia = text_between(lines[4], "NRO.DE GUIA:", "CABEZAS FAENADAS:")
     fecha_faena = text_between(lines[3], "FECHA DE FAENA:", "")
     romaneo = text_between(lines[4], "ROMANEO INT.#.:", "").replace(",", ".")
