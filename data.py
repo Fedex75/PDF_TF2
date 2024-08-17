@@ -82,6 +82,12 @@ def get_data_D(lines, id_pdf):
 
     consignatario = ' '.join(lines[0].split()[0:-5])
 
+    usuario = ''
+
+    for line in lines:
+        if "Rendimientos" in line:
+            usuario = text_between(line, "U:", "a").strip()
+
     for line in lines:
         if "desde el:" in line:
             fechas = text_between(line, "desde el:", "D:").strip().split("al")
@@ -129,7 +135,7 @@ def get_data_D(lines, id_pdf):
             uni = lines[i][index_piezas:index_uni+4].strip()
             kilos = lines[i][index_uni+5:index_kilos+6].strip().replace(",","")
 
-            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{tropa},{uni},{kilos},,{id_pdf}")
+            result.append(f"{consignatario},{fecha_inicio},{fecha_fin},ENTRADA,{cod_prod},{producto},{destino},,,{cl},,{tropa},{uni},{kilos},,{id_pdf},{usuario}")
 
     i = fin_tabla_entrada + 1
     fin_tabla_salida = 0
