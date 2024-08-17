@@ -100,15 +100,15 @@ def drop(event):
                 process_function = None
                 if basename == 'faena':
                     out_file = 'datos_f.csv'
-                    header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG'
+                    header = 'CL,TI,DC,ID,KG,KGVTOT,CONS,RS,LOCALIDAD,CUIT,RENSPA,DTE,TROPA NRO,NRO DE GUIA,FECHA DE FAENA,ROMANEO,ID PDF,USUARIO'
                     process_function = data.process_pdf_F
                 elif basename == 'cuarteo':
                     out_file = 'datos_c.csv'
-                    header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG'
+                    header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG,ID PDF'
                     process_function = data.process_pdf_C
                 elif basename == 'despostada':
                     out_file = 'datos_d.csv'
-                    header = 'CONSIGNATARIO,FECHA_INICIO,FECHA_FIN,PROCESO,ID,PRODUCTO,DESTINO,CONSERVACION,MARCA,CL,PIEZAS,TROPA,UNIDADES,KILOS,RENDI,ID PDF'
+                    header = 'CONSIGNATARIO,FECHA_INICIO,FECHA_FIN,PROCESO,ID,PRODUCTO,DESTINO,CONSERVACION,MARCA,CL,PIEZAS,TROPA,UNIDADES,KILOS,RENDI,ID PDF,USUARIO'
                     process_function = data.process_pdf_D
                 else:
                     manager.set_error('Carpeta desconocida')
