@@ -1,3 +1,5 @@
+# pylint: disable=line-too-long
+
 '''GUI'''
 import os
 import re
@@ -77,6 +79,7 @@ class Manager:
         self.update_canvas()
 
 def split_pathnames(input_string):
+    '''Splits a string containing pathnames into a list'''
     # 🛑 Alto en ChatGPT
     # This regex pattern matches sequences of characters inside curly braces or sequences of non-whitespace characters
     pattern = r'\{.*?\}|\S+'
@@ -101,22 +104,32 @@ def drop(event):
                 if basename == 'faena':
                     out_file = 'datos_f.csv'
                     header = 'CL,TI,DC,ID,KG,KGVTOT,CONS,RS,LOCALIDAD,CUIT,RENSPA,DTE,TROPA NRO,NRO DE GUIA,FECHA DE FAENA,ROMANEO,ID PDF,USUARIO'
-                    process_function = data.process_pdf_F
+                    process_function = data.process_pdf_faena
                 elif basename == 'cuarteo':
                     out_file = 'datos_c.csv'
                     header = 'FECHA,FRIGORIFICO,PROCESO,ID,PRODUCTO,CL,UNIDADES,KG,ID PDF'
-                    process_function = data.process_pdf_C
+                    process_function = data.process_pdf_cuarteo
                 elif basename == 'despostada':
                     out_file = 'datos_d.csv'
                     header = 'CONSIGNATARIO,FECHA_INICIO,FECHA_FIN,PROCESO,ID,PRODUCTO,DESTINO,CONSERVACION,MARCA,CL,PIEZAS,TROPA,UNIDADES,KILOS,RENDI,ID PDF,USUARIO'
-                    process_function = data.process_pdf_D
+                    process_function = data.process_pdf_despostada
                 else:
                     manager.set_error('Carpeta desconocida')
                     return
 
                 manager.set_start_processing(len(file_names))
 
-                worker = threading.Thread(target=utils.csv_output, args=(path_names[0], file_names, out_file, header, process_function, manager.increment_processed_file_counter, manager.set_finished_processing))
+                worker = threading.Thread(
+                    target=utils.csv_output,
+                    args=(
+                        path_names[0],
+                        file_names,
+                        out_file, header,
+                        process_function,
+                        manager.increment_processed_file_counter,
+                        manager.set_finished_processing
+                    )
+                )
                 worker.start()
             else:
                 manager.set_error('La carpeta está vacía. Nada para hacer.')

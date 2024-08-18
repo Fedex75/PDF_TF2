@@ -1,11 +1,13 @@
+# pylint: disable=line-too-long
+
 '''Data functions'''
 import re
-from utils import text_between, extract_text_from_pdf, filter_empty_lines
+from utils import text_between, extract_text_from_pdf
 
-def get_data_C(lines, id_pdf):
+def get_data_cuarteo(lines, id_pdf):
     '''Extract data from PDF type C'''
     result = []
-    frigorifico = (text_between(lines[0], "", "   "))
+    frigorifico = text_between(lines[0], "", "   ")
     fecha = text_between(lines[3], "el:","al").strip()
 
     count = 0
@@ -59,7 +61,7 @@ def get_data_C(lines, id_pdf):
 
     return result
 
-def process_pdf_C(path, id_pdf):
+def process_pdf_cuarteo(path, id_pdf):
     '''Process PDF using C method'''
 
     lines = extract_text_from_pdf(path)
@@ -72,11 +74,11 @@ def process_pdf_C(path, id_pdf):
 
     result = []
     for i in range(len(indeces) - 1):
-        result.extend(get_data_C(lines[indeces[i]:indeces[i + 1]], id_pdf))
+        result.extend(get_data_cuarteo(lines[indeces[i]:indeces[i + 1]], id_pdf))
 
     return result
 
-def get_data_D(lines, id_pdf):
+def get_data_despostada(lines, id_pdf):
     '''Extract data from PDF type D'''
     result = []
 
@@ -163,7 +165,7 @@ def get_data_D(lines, id_pdf):
 
     return result
 
-def process_pdf_D(path, id_pdf):
+def process_pdf_despostada(path, id_pdf):
     '''Extract data from PDF type D'''
     lines = extract_text_from_pdf(path)
 
@@ -175,11 +177,11 @@ def process_pdf_D(path, id_pdf):
 
     result = []
     for i in range(len(indices) - 1):
-        result.extend(get_data_D(lines[indices[i]:indices[i + 1]], id_pdf))
+        result.extend(get_data_despostada(lines[indices[i]:indices[i + 1]], id_pdf))
 
     return result
 
-def get_data_F(lines, id_pdf):
+def get_data_faena(lines, id_pdf):
     '''Extract data from PDF type F'''
     # Obtener info encabezado
 
@@ -272,7 +274,7 @@ def get_data_F(lines, id_pdf):
 
     return result
 
-def process_pdf_F(path, id_pdf):
+def process_pdf_faena(path, id_pdf):
     '''Process PDF using F method'''
     lines = extract_text_from_pdf(path)
 
@@ -284,6 +286,6 @@ def process_pdf_F(path, id_pdf):
 
     result = []
     for i in range(len(indeces) - 1):
-        result.extend(get_data_F(lines[indeces[i]:indeces[i + 1]], id_pdf))
+        result.extend(get_data_faena(lines[indeces[i]:indeces[i + 1]], id_pdf))
 
     return result
