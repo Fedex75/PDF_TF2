@@ -251,13 +251,24 @@ def get_data_F(lines, id_pdf):
     # Crear tabla de IDs
 
     result = []
-    for i in range(table_start_height, last_table_line, 2):
-        ids = (lines[i][kilo_table_left:kilo_table_right]).split()
-        kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
-        info = (lines[i+1][1:kilo_table_left-1]).split()
+    i = table_start_height
+    while i < last_table_line:
+        info = (lines[i][1:kilo_table_left-1]).split()
+        if len(info) == 0:
+            # Es de las tablas que tienen unidades y kilos
+            unidades = (lines[i][kilo_table_left:kilo_table_right]).split()
+            kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
+            i += 2
 
-        for j in range(len(kilos)):
-            result.append(f"{info[0]},{info[1]},{info[2]},{ids[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
+            for j in range(min(len(kilos), len(unidades))):
+                result.append(f"{info[0]},{info[1]},{info[2]},{unidades[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
+        else:
+            # Es de las tablas que solo tienen kilos
+            kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
+            i += 1
+
+            for kilo in kilos:
+                result.append(f"{info[0]},{info[1]},{info[2]},,{kilo},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
 
     return result
 
