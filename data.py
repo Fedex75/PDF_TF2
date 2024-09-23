@@ -192,7 +192,7 @@ def get_data_faena(lines, id_pdf):
         consignatario = lines[0][indices[0] + 1 : indices[1]].strip()
         razon_social = lines[0][indices[1] + 1 :].strip()
     else:
-        consignatario = lines[0].strip()
+        consignatario = text_between(lines[0], ')', '').strip()
         razon_social = consignatario
 
     #localidad = lines[1][18:index_cuit].strip()
@@ -254,23 +254,28 @@ def get_data_faena(lines, id_pdf):
 
     result = []
     i = table_start_height
-    while i < last_table_line:
-        info = (lines[i][1:kilo_table_left-1]).split()
-        if len(info) == 0:
-            # Es de las tablas que tienen unidades y kilos
+    info = (lines[i][1:kilo_table_left-1]).split()
+    if len(info) == 0:
+        # Es de las tablas que tienen unidades y kilos
+        while i < last_table_line:
             unidades = (lines[i][kilo_table_left:kilo_table_right]).split()
             kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
-            i += 2
+            info = (lines[i+1][1:kilo_table_left-1]).split()
 
             for j in range(min(len(kilos), len(unidades))):
                 result.append(f"{info[0]},{info[1]},{info[2]},{unidades[j]},{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
-        else:
-            # Es de las tablas que solo tienen kilos
-            kilos = (lines[i+1][kilo_table_left:kilo_table_right]).split()
-            i += 1
 
-            for kilo in kilos:
-                result.append(f"{info[0]},{info[1]},{info[2]},,{kilo},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
+            i += 2
+    else:
+        # Es de las tablas que solo tienen kilos
+        while i < last_table_line:
+            kilos = (lines[i][kilo_table_left:kilo_table_right]).split()
+            info = (lines[i][1:kilo_table_left-1]).split()
+
+            for j in range(len(kilos)):
+                result.append(f"{info[0]},{info[1]},{info[2]},,{kilos[j]},{kgvtot},{consignatario},{razon_social},{localidad},{cuit},{renspa},{dte},{tropa_nro},{nro_guia},{fecha_faena},{romaneo},{id_pdf},{usuario}")
+
+            i += 1
 
     return result
 
